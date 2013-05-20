@@ -1,7 +1,7 @@
 tivi
 ======
 
-> A tiny VI clone.
+> A tiny VI like editor.
 
 Motivation
 ------------
