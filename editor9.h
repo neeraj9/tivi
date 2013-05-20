@@ -43,37 +43,37 @@ typedef struct buf Buf;
 
 // function prototypes *********************
 
-Buf *get_buffer (void);         // this creates a new buffer 
-Row *get_rownode (void);        // this creates a new row node
-Lnode *get_lnode (void);        // creates a new lnode
-int screen_pos (Row * r);       // gives the screen poition of the (line) row 
+Buf *get_buffer(void);          // this creates a new buffer 
+Row *get_rownode(void);         // this creates a new row node
+Lnode *get_lnode(void);         // creates a new lnode
+int screen_pos(Row * r);        // gives the screen poition of the (line) row 
         //  pointed by r 
-int screen_line_size (Row * r); // gives the size of the line on the screen
-int get_node_no (int pos);      // it returns the node number of the position
-int gox (Buf * b, int pos);     // it moves the buffer pointer to the position 
+int screen_line_size(Row * r);  // gives the size of the line on the screen
+int get_node_no(int pos);       // it returns the node number of the position
+int gox(Buf * b, int pos);      // it moves the buffer pointer to the position 
         //  pos in the current line
-char getele (Buf * b);          // it returns the element under the cursor
-char *get_buf_line (Row * r);   // it returns the line in the buffer pointed
+char getele(Buf * b);           // it returns the element under the cursor
+char *get_buf_line(Row * r);    // it returns the line in the buffer pointed
         //  by r
-int putele (Buf * b, char ch);  // it overwrites the current char by ch
-int insertele (Buf * b, char ch); // it inserts a char at the current position
-int deleteele (Buf * b);        // it deletes the current character
-int delete_line (Buf * b);      // it deletes the current line
-int insert_line_down (Buf * b); // it inserts an empty line down the current 
-int insert_line_above (Buf * b);  // it inserts an empty line above the current
-int not_started (Buf * b);      // it returns 1 if not a single char. is 
+int putele(Buf * b, char ch);   // it overwrites the current char by ch
+int insertele(Buf * b, char ch);  // it inserts a char at the current position
+int deleteele(Buf * b);         // it deletes the current character
+int delete_line(Buf * b);       // it deletes the current line
+int insert_line_down(Buf * b);  // it inserts an empty line down the current 
+int insert_line_above(Buf * b); // it inserts an empty line above the current
+int not_started(Buf * b);       // it returns 1 if not a single char. is 
         //  written in the buffer
-int set_filename (Buf * b, const char *fname);
+int set_filename(Buf * b, const char *fname);
         // this sets the filename for the buffer
-int file_exists (char *fname);  // it returns 1 if file exists and 0 if not
-int write_to_file (Buf * b);    // it writes everything from the buffer to 
+int file_exists(char *fname);   // it returns 1 if file exists and 0 if not
+int write_to_file(Buf * b);     // it writes everything from the buffer to 
         //  the file
-Buf *read_from_file (const char *fname);
+Buf *read_from_file(const char *fname);
         // it generates the buffer from the file
 // prototypes end ************************** 
 
 Buf *
-get_buffer (void) {
+get_buffer(void) {
   Buf *b;
 
   b = new Buf;
@@ -81,12 +81,12 @@ get_buffer (void) {
   b->screen_start_line = 1;
   b->y = 1;
   b->filename = NULL;
-  b->currrow = get_rownode ();
+  b->currrow = get_rownode();
   return (b);
 }
 
 Row *
-get_rownode (void) {
+get_rownode(void) {
   Row *r;
 
   r = new Row;
@@ -99,7 +99,7 @@ get_rownode (void) {
 }
 
 Lnode *
-get_lnode (void) {
+get_lnode(void) {
   Lnode *l;
 
   l = new Lnode;
@@ -109,17 +109,17 @@ get_lnode (void) {
 }
 
 int
-delete_buffer (Buf * &b) {
+delete_buffer(Buf * &b) {
   if (b == NULL)
     return (ERROR);
-  while (delete_line (b) != ERROR);
+  while (delete_line(b) != ERROR);
   delete b->currrow;
   delete b;
   b = NULL;
 }
 
 int
-screen_pos (Row * r) {
+screen_pos(Row * r) {
   Lnode *l;
   int i;
   int count = 0;
@@ -150,7 +150,7 @@ screen_pos (Row * r) {
 }
 
 int
-screen_line_size (Row * r) {
+screen_line_size(Row * r) {
   int count = 0, i;
   char ch;
   Lnode *l;
@@ -179,7 +179,7 @@ screen_line_size (Row * r) {
 }
 
 int
-get_node_no (int pos) {
+get_node_no(int pos) {
   int n = 0;
 
   if (pos != 0 && pos % 16 == 0)
@@ -190,7 +190,7 @@ get_node_no (int pos) {
 }
 
 int
-gox (Buf * b, int pos) {
+gox(Buf * b, int pos) {
   Row *r;
   int n = 0, n2 = 0;
 
@@ -204,8 +204,8 @@ gox (Buf * b, int pos) {
   } else if (pos > (r->no_of_chars + 1) || pos <= 0)
     return (ERROR);
   else {
-    n = get_node_no (r->x);
-    n2 = get_node_no (pos);
+    n = get_node_no(r->x);
+    n2 = get_node_no(pos);
     n = n - n2;
     while (n != 0) {
       if (n < 0) {
@@ -222,7 +222,7 @@ gox (Buf * b, int pos) {
 }
 
 char
-getele (Buf * b) {
+getele(Buf * b) {
   char ch;
   int x1;
 
@@ -237,7 +237,7 @@ getele (Buf * b) {
 
 // dont forget to delete the returned pointer after use
 char *
-get_buf_line (Row * r) {
+get_buf_line(Row * r) {
   char *s;
   int x1, nc;
   int j, count, lsize;
@@ -250,7 +250,7 @@ get_buf_line (Row * r) {
   x1 = 1;
   //if (nc==0)
   // return(NULL);
-  lsize = screen_line_size (r);
+  lsize = screen_line_size(r);
   s = new char[lsize + 1];
   if (l != NULL)
     while (l->leftptr != NULL) {
@@ -285,7 +285,7 @@ get_buf_line (Row * r) {
 }
 
 int
-putele (Buf * b, char ch) {
+putele(Buf * b, char ch) {
   int x1, nc;
   Row *r;
   Lnode *l;
@@ -305,11 +305,11 @@ putele (Buf * b, char ch) {
       b->currrow = r;
       if (r->rightptr != NULL)
         r->rightptr->leftptr = r;
-      r->currlnode = get_lnode ();
+      r->currlnode = get_lnode();
       r->no_of_chars = 1;
       r->currlnode->chs[0] = ch;
     } else {
-      l = get_lnode ();
+      l = get_lnode();
       l->leftptr = b->currrow->currlnode;
       b->currrow->currlnode->rightptr = l;
       b->currrow->currlnode = l;
@@ -318,7 +318,7 @@ putele (Buf * b, char ch) {
     }
   } else if (x1 == nc + 1) {
     if (b->currrow->currlnode == NULL)  // when nc==0
-      b->currrow->currlnode = get_lnode ();
+      b->currrow->currlnode = get_lnode();
     if (x1 % 16 == 0)
       b->currrow->currlnode->chs[15] = ch;
     else
@@ -335,15 +335,15 @@ putele (Buf * b, char ch) {
 }
 
 int
-insertele (Buf * b, char ch) {
+insertele(Buf * b, char ch) {
   Lnode *l, *n = NULL;
   Row *r;
   int x1, nc, i;
   char chnext;
 
-  if (screen_line_size (b->currrow) == 80)
+  if (screen_line_size(b->currrow) == 80)
     return (ERROR);
-  if (ch == TAB_MYKEY && screen_line_size (b->currrow) + TAB_VAL > 80)
+  if (ch == TAB_MYKEY && screen_line_size(b->currrow) + TAB_VAL > 80)
     return (ERROR);
 
   l = b->currrow->currlnode;
@@ -351,14 +351,14 @@ insertele (Buf * b, char ch) {
   nc = b->currrow->no_of_chars;
 
   if (x1 > nc)
-    putele (b, ch);
+    putele(b, ch);
   else {
     while (i <= nc) {
       if (i % 16 == 0) {
         chnext = l->chs[15];
         l->chs[15] = ch;
         if (l->rightptr == NULL) {
-          l->rightptr = get_lnode ();
+          l->rightptr = get_lnode();
           l->rightptr->leftptr = l;
         }
         l = l->rightptr;
@@ -381,7 +381,7 @@ insertele (Buf * b, char ch) {
 }
 
 int
-deleteele (Buf * b) {
+deleteele(Buf * b) {
   Lnode *l, *temp;
   int x1, x2, x3, nc;
   char ch, tmp;
@@ -395,15 +395,15 @@ deleteele (Buf * b) {
   else if (x1 <= nc) {
     x2 = x1 + 1;
     while (x2 <= nc) {
-      gox (b, x2);
-      ch = getele (b);
-      gox (b, x1);
-      putele (b, ch);
+      gox(b, x2);
+      ch = getele(b);
+      gox(b, x1);
+      putele(b, ch);
       x1++;
       x2++;
     }
     if (x1 % 16 == 1) {
-      gox (b, x1);              // go to the end character
+      gox(b, x1);               // go to the end character
       l = b->currrow->currlnode;
       temp = l;
       if (nc == 1) {
@@ -420,17 +420,17 @@ deleteele (Buf * b) {
         if (temp != NULL)
           delete temp;
         if (x3 == nc)
-          gox (b, x3 - 1);
+          gox(b, x3 - 1);
         else
-          gox (b, x3);
+          gox(b, x3);
 
         b->currrow->no_of_chars--;
       }
     } else {
       if (x3 == nc)
-        gox (b, x3 - 1);
+        gox(b, x3 - 1);
       else
-        gox (b, x3);
+        gox(b, x3);
       b->currrow->no_of_chars--;
     }
   }                             // end of if x1<=nc
@@ -438,13 +438,13 @@ deleteele (Buf * b) {
 }
 
 int
-delete_line (Buf * b) {
+delete_line(Buf * b) {
   Lnode *l;
   Row *r;
 
-  if (not_started (b))
+  if (not_started(b))
     return (ERROR);
-  gox (b, 1);
+  gox(b, 1);
   l = b->currrow->currlnode;
   while (l != NULL) {
     b->currrow->currlnode = l->rightptr;
@@ -484,12 +484,12 @@ delete_line (Buf * b) {
 }                               // end of function 
 
 int
-insert_line_down (Buf * b) {
+insert_line_down(Buf * b) {
   Row *r;
 
   if (b->no_of_lines == MAXBUFLEN)
     return (ERROR_FULL);
-  r = get_rownode ();
+  r = get_rownode();
   r->leftptr = b->currrow;
   r->rightptr = b->currrow->rightptr;
   b->currrow->rightptr = r;
@@ -505,12 +505,12 @@ insert_line_down (Buf * b) {
 }
 
 int
-insert_line_above (Buf * b) {
+insert_line_above(Buf * b) {
   Row *r;
 
   if (b->no_of_lines == MAXBUFLEN)
     return (ERROR_FULL);
-  r = get_rownode ();
+  r = get_rownode();
   r->leftptr = b->currrow->leftptr;
   r->rightptr = b->currrow;
   b->currrow->leftptr = r;
@@ -522,7 +522,7 @@ insert_line_above (Buf * b) {
 }
 
 int
-not_started (Buf * b) {
+not_started(Buf * b) {
   if (b->no_of_lines == 1 && b->currrow->no_of_chars == 0)
     return (1);
   else
@@ -530,33 +530,33 @@ not_started (Buf * b) {
 }
 
 int
-set_filename (Buf * b, const char *fname) {
+set_filename(Buf * b, const char *fname) {
   if (b == NULL)
     return (ERROR);
   if (b->filename != NULL)
     return (ERROR);
   else {
-    b->filename = new char[strlen (fname) + 1];
+    b->filename = new char[strlen(fname) + 1];
     b->filename[0] = '\0';
-    strcat (b->filename, fname);
+    strcat(b->filename, fname);
   }
   return (0);
 }
 
 int
-file_exists (char *fname) {
+file_exists(char *fname) {
   FILE *fin;
 
-  fin = fopen (fname, "r");
+  fin = fopen(fname, "r");
   if (fin == NULL)
     return (0);
   // else  
-  fclose (fin);
+  fclose(fin);
   return (1);
 }
 
 int
-write_to_file (Buf * b) {
+write_to_file(Buf * b) {
   Row *r;
   Lnode *l;
   FILE *fout;
@@ -564,7 +564,7 @@ write_to_file (Buf * b) {
 
   if (b->filename == NULL)
     return (ERROR);
-  fout = fopen (b->filename, "w");
+  fout = fopen(b->filename, "w");
   if (fout == NULL)
     return (ERROR);
 
@@ -579,23 +579,23 @@ write_to_file (Buf * b) {
         l = l->leftptr;
       while (l != NULL && x1 <= r->no_of_chars) {
         if (x1 % 16 == 0) {
-          fprintf (fout, "%c", l->chs[15]);
+          fprintf(fout, "%c", l->chs[15]);
           l = l->rightptr;
         } else
-          fprintf (fout, "%c", l->chs[(x1 % 16) - 1]);
+          fprintf(fout, "%c", l->chs[(x1 % 16) - 1]);
         x1++;
       }                         //end of while
     }                           // end of if
     //if (r->rightptr!=NULL)
-    fprintf (fout, "\n");
+    fprintf(fout, "\n");
     r = r->rightptr;
   }                             // end of while r!=NULL
-  fclose (fout);
+  fclose(fout);
   return (0);
 }
 
 Buf *
-read_from_file (const char *fname) {
+read_from_file(const char *fname) {
   Buf *b;
   Row *temp;
   FILE *fin;
@@ -603,31 +603,31 @@ read_from_file (const char *fname) {
   int count;
   int last_endln_flag = 0;
 
-  fin = fopen (fname, "r");
+  fin = fopen(fname, "r");
   if (fin == NULL)
     return (NULL);
-  b = get_buffer ();
-  b->filename = new char[strlen (fname) + 1];
+  b = get_buffer();
+  b->filename = new char[strlen(fname) + 1];
   b->filename[0] = '\0';
-  strcat (b->filename, fname);
-  while (!feof (fin)) {
-    fscanf (fin, "%c", &ch);
-    if (feof (fin))
+  strcat(b->filename, fname);
+  while (!feof(fin)) {
+    fscanf(fin, "%c", &ch);
+    if (feof(fin))
       break;
     if (ch != '\n' && ch != '\0') {
-      putele (b, ch);
+      putele(b, ch);
       b->currrow->x++;
       last_endln_flag = 0;
     } else {
       //if (b->currrow->no_of_chars!=0)
       //gox(b,1);
-      insert_line_down (b);
+      insert_line_down(b);
       last_endln_flag = 1;
     }
   }                             //end of while
   if (last_endln_flag)
-    delete_line (b);
+    delete_line(b);
 
-  fclose (fin);
+  fclose(fin);
   return (b);
 }
