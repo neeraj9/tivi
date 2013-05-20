@@ -6,13 +6,16 @@
  *
  * Copyright (c) 2000 Neeraj Sharma <neeraj.sharma@alumni.iitg.ernet.in>
  */
-#include<iostream.h>
-#include<stdlib.h>
+#include<iostream>
+#include<cstdlib>
 #include<curses.h>
 #include<string.h>
 
-#define SCREEN_MAXLIN 46
-#define TAB_MYKEY   9
+namespace {
+  
+  const int SCREEN_MAXLIN = 46;
+  const int TAB_MYKEY = 9;
+}
 
 #include "editor9.h"
 #include "eutil.h"
@@ -27,6 +30,7 @@ void del_lin(void);
 
 Buf *buffer;                    // globel buffer  
 
+int
 main(int argc, char *argv[]) {
   int i = 0;
   int choice;                   // used to take the user choice 
@@ -65,17 +69,9 @@ main(int argc, char *argv[]) {
     op1 = 0;
     switch (choice) {
     case 'a':
-      text_mode(choice);
-      break;
     case 'i':
-      text_mode(choice);
-      break;
     case 'o':
-      text_mode(choice);
-      break;
     case 'O':
-      text_mode(choice);
-      break;
     case 'r':
       text_mode(choice);
       break;
@@ -192,15 +188,14 @@ main(int argc, char *argv[]) {
       }                         // end of if !exit_flag
       break;
     case 'd':                  // command to delete a line 
-
       if (buffer == NULL) {
         print_error(" Buffer is empty !! ");
         wrong_cmd_flag = 1;
-      } else
+      } else {
         del_lin();
+      }
       break;
     case 'x':                  // command to delete a character
-
       common_fn(DEL_MYKEY, COMMAND);
       wrefresh(textwin);
       break;
@@ -238,7 +233,7 @@ main(int argc, char *argv[]) {
   }                             // end of while
 
   endwin();                     // end the session
-
+  return 0;
 }                               //end of main
 
 // this function is called when the user wants to edit text
