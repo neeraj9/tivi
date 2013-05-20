@@ -22,3 +22,16 @@ systems along with educational research.
 
 
 - Neeraj Sharma
+
+Coding Guidelines
+-------------------
+
+
+The coding guidelines are similar to Google coding guidelines and the files are
+processed with GNU Indent to change the most part as follows:
+
+    indent -br -ce -l80 -sob -cdw -cdb -sc -ncs -nbs -saf -sai -saw -nprs \
+      -nbc -brs -brf -ppi 2 -nbbo -nut -ts 2 -v -o tivi-fixed.cpp tivi.cpp
+
+> See http://www.gnu.org/software/indent/manual/indent.html
+> See http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
