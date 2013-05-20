@@ -36,16 +36,16 @@
 #define CTRL_J 10
 #define CTRL_H 8
 
-void start_session (void);      // to start the session 
-void read_cmd (char *t, char ch); // to read command from the user
-char *get_st (char *st, int n); // to get a string 
-char *process_cmd (Buf * buffer, char *st, int &option);
+void start_session(void);       // to start the session 
+void read_cmd(char *t, char ch);  // to read command from the user
+char *get_st(char *st, int n);  // to get a string 
+char *process_cmd(Buf * buffer, char *st, int &option);
         // to process the command appropriately
-void i2st (char *st, int n);
-void print_error (const char *s); // print error 
-void prn_txt (Buf * buffer, int option);  // print the details  
+void i2st(char *st, int n);
+void print_error(const char *s);  // print error 
+void prn_txt(Buf * buffer, int option); // print the details  
           //e.g. filename , lines..
-int buf_to_screen (Buf * b, int start_line_no); // to print from the buffer to 
+int buf_to_screen(Buf * b, int start_line_no);  // to print from the buffer to 
             //the screen
 
 WINDOW *textwin, *msgwin;
@@ -53,37 +53,37 @@ WINDOW *textwin, *msgwin;
       // textwin is for the window for text editing
 
 void
-start_session (void) {
-  initscr ();
-  cbreak ();
-  noecho ();
-  nonl ();
-  intrflush (stdscr, FALSE);
-  keypad (stdscr, TRUE);
-  textwin = newwin (SCREEN_MAXLIN, 80, 0, 0); //create window for text mode
-  keypad (textwin, TRUE);
-  msgwin = newwin (1, 80, SCREEN_MAXLIN, 0);
+start_session(void) {
+  initscr();
+  cbreak();
+  noecho();
+  nonl();
+  intrflush(stdscr, FALSE);
+  keypad(stdscr, TRUE);
+  textwin = newwin(SCREEN_MAXLIN, 80, 0, 0);  //create window for text mode
+  keypad(textwin, TRUE);
+  msgwin = newwin(1, 80, SCREEN_MAXLIN, 0);
   //wattrset(msgwin,A_BOLD);
-  wclear (msgwin);
-  wrefresh (msgwin);
-  keypad (msgwin, TRUE);
+  wclear(msgwin);
+  wrefresh(msgwin);
+  keypad(msgwin, TRUE);
 
 }
 
 void
-read_cmd (char *t, char ch) {
+read_cmd(char *t, char ch) {
   //wattrset(msgwin,A_NORMAL);
-  wclear (msgwin);
-  wrefresh (msgwin);
-  wmove (msgwin, 0, 0);
-  echo ();
-  wgetstr (msgwin, t);
-  noecho ();
+  wclear(msgwin);
+  wrefresh(msgwin);
+  wmove(msgwin, 0, 0);
+  echo();
+  wgetstr(msgwin, t);
+  noecho();
   //wattrset(msgwin,A_BOLD);
 }
 
 char *
-get_st (char *st, int n) {
+get_st(char *st, int n) {
   char *s;
   char *s1;
 
@@ -92,26 +92,26 @@ get_st (char *st, int n) {
   if (*s == ' ') {
     while ((*s) == ' ')
       s++;
-    if (strlen (s) != 0) {
-      s1 = new char[strlen (s) + 1];
-      strcpy (s1, s);
+    if (strlen(s) != 0) {
+      s1 = new char[strlen(s) + 1];
+      strcpy(s1, s);
     }
   }
   return (s1);
 }
 
 char *
-process_cmd (Buf * buffer, char *st, int &option) {
+process_cmd(Buf * buffer, char *st, int &option) {
   //char *s;
   char *s1;
 
   option = 0;
   s1 = NULL;
 
-  if (strlen (st) == 0)
+  if (strlen(st) == 0)
     return (NULL);
-  if (strncmp (st, ":o", 2) == 0) {
-    s1 = get_st (st, 2);
+  if (strncmp(st, ":o", 2) == 0) {
+    s1 = get_st(st, 2);
     if (s1 == NULL)
       option = ERROR;
     else
@@ -119,8 +119,8 @@ process_cmd (Buf * buffer, char *st, int &option) {
     return (s1);
   }
 
-  if (strncmp (st, ":!", 2) == 0) {
-    s1 = get_st (st, 2);
+  if (strncmp(st, ":!", 2) == 0) {
+    s1 = get_st(st, 2);
     if (s1 == NULL)
       option = ERROR;
     else
@@ -132,13 +132,13 @@ process_cmd (Buf * buffer, char *st, int &option) {
     return (NULL);
   }
 
-  if (strncmp (st, ":wq", 3) != 0) {
-    if (strncmp (st, ":w", 2) == 0) {
-      s1 = get_st (st, 2);
+  if (strncmp(st, ":wq", 3) != 0) {
+    if (strncmp(st, ":w", 2) == 0) {
+      s1 = get_st(st, 2);
       option = SAVE;
     }
   } else {
-    s1 = get_st (st, 3);
+    s1 = get_st(st, 3);
     if (s1 != NULL)
       option = ERROR;
     else
@@ -146,7 +146,7 @@ process_cmd (Buf * buffer, char *st, int &option) {
   }
 
   if (!option) {
-    if (strcmp (st, ":c") == 0)
+    if (strcmp(st, ":c") == 0)
       option = CLOSE;
     else
       option = ERROR;
@@ -156,7 +156,7 @@ process_cmd (Buf * buffer, char *st, int &option) {
 }
 
 void
-i2st (char *st, int n) {
+i2st(char *st, int n) {
   int i, n1;
 
   n1 = n;
@@ -178,38 +178,38 @@ i2st (char *st, int n) {
 }
 
 void
-print_error (const char *s) {
-  wclear (msgwin);
-  waddstr (msgwin, s);
-  wrefresh (msgwin);
+print_error(const char *s) {
+  wclear(msgwin);
+  waddstr(msgwin, s);
+  wrefresh(msgwin);
 }
 
 void
-prn_txt (Buf * buffer, int option) {
+prn_txt(Buf * buffer, int option) {
   int a, b, c;
-  wclear (msgwin);
-  wrefresh (msgwin);
+  wclear(msgwin);
+  wrefresh(msgwin);
   if (option == INS)
-    waddstr (msgwin, TXT_INS);
+    waddstr(msgwin, TXT_INS);
   else if (option == OVRW)
-    waddstr (msgwin, TXT_OVRW);
+    waddstr(msgwin, TXT_OVRW);
   else if (option == COMMAND)
-    waddstr (msgwin, CMD);
-  wmove (msgwin, 0, 15);
-  a = screen_pos (buffer->currrow);
+    waddstr(msgwin, CMD);
+  wmove(msgwin, 0, 15);
+  a = screen_pos(buffer->currrow);
   b = buffer->screen_start_line + buffer->y - 1;
-  c = get_node_no (buffer->currrow->x);
-  wprintw (msgwin, " COL : %-4d LINE : %-4d", a, b);
-  wprintw (msgwin, " chars :%-2d", buffer->currrow->no_of_chars);
+  c = get_node_no(buffer->currrow->x);
+  wprintw(msgwin, " COL : %-4d LINE : %-4d", a, b);
+  wprintw(msgwin, " chars :%-2d", buffer->currrow->no_of_chars);
   if (buffer->filename != NULL)
-    wprintw (msgwin, "  File Name :%s", buffer->filename);
+    wprintw(msgwin, "  File Name :%s", buffer->filename);
   else
-    wprintw (msgwin, "  File Name : -");
-  wrefresh (msgwin);
+    wprintw(msgwin, "  File Name : -");
+  wrefresh(msgwin);
 }
 
 int
-buf_to_screen (Buf * b, int start_line_no) {
+buf_to_screen(Buf * b, int start_line_no) {
   int y;
   int end_line_no;
   int n, line_no;
@@ -220,8 +220,8 @@ buf_to_screen (Buf * b, int start_line_no) {
     return (ERROR);
   if (start_line_no > b->no_of_lines)
     return (ERROR);
-  wclear (textwin);
-  wrefresh (textwin);
+  wclear(textwin);
+  wrefresh(textwin);
   end_line_no = start_line_no + SCREEN_MAXLIN - 1;
   if (end_line_no > b->no_of_lines)
     end_line_no = b->no_of_lines;
@@ -229,8 +229,8 @@ buf_to_screen (Buf * b, int start_line_no) {
   n = b->screen_start_line + b->y - 1;
   n = n - start_line_no;
   r = b->currrow;
-  wclear (textwin);
-  wrefresh (textwin);
+  wclear(textwin);
+  wrefresh(textwin);
   while (n != 0) {
     if (n < 0) {
       r = r->rightptr;
@@ -250,10 +250,10 @@ buf_to_screen (Buf * b, int start_line_no) {
   }
   while (n <= end_line_no && r != NULL) {
     y = n - start_line_no + 1;
-    wmove (textwin, y - 1, 0);
-    st = get_buf_line (r);
+    wmove(textwin, y - 1, 0);
+    st = get_buf_line(r);
     if (st != NULL) {
-      waddstr (textwin, st);
+      waddstr(textwin, st);
       delete[]st;               //  deallocating the space after using it
     }
     r = r->rightptr;
@@ -261,7 +261,7 @@ buf_to_screen (Buf * b, int start_line_no) {
   }
   //b->y=n-1;
   //b->screen_start_line=start_line_no;
-  wmove (textwin, b->y - 1, screen_pos (b->currrow) - 1);
-  wrefresh (textwin);
+  wmove(textwin, b->y - 1, screen_pos(b->currrow) - 1);
+  wrefresh(textwin);
   return (0);
 }
