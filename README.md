@@ -23,6 +23,20 @@ systems along with educational research.
 
 - Neeraj Sharma
 
+
+A little more c++
+-------------------
+
+The source is mainly c and no way near c++. The following minimal
+design (thinking for few minutes) should change that.
+
+> At least two classes should exist, namely; Buffer and Screen.
+> The Buffer class manages the memory representation of the
+> text file, while Screen hides the ncurses functionality.
+> This is the minimum what should exist, untill more stuff
+> is added to improve it further.
+
+
 Coding Guidelines
 -------------------
 
