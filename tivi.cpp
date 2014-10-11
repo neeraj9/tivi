@@ -2,6 +2,12 @@
  *
  * tivi: A tiny VI clone.
  *
+ * I started this project as a college assignment and came
+ * up with a tiny text editor in a week. The activity was
+ * both tiring and inspiring because I could learn a bunch
+ * of new concepts (curses, c++, datastructures) all at the
+ * same time much better than any textbook could explain.
+ *
  * See LICENSE file for license information.
  *
  * Copyright (c) 2000 Neeraj Sharma <neeraj.sharma@alumni.iitg.ernet.in>
