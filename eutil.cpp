@@ -12,6 +12,11 @@
 #include <curses.h>
 #include <string.h>
 
+WINDOW *textwin,*msgwin;
+			// msgwin is for the message window
+			// textwin is for the window for text editing
+
+
 void start_session(void)
 {
  initscr(); 
@@ -49,7 +54,7 @@ char *get_st(char *st,int n)
  char *s;
  char *s1;
 
-    s1=NULL;
+    s1=0;
     s=st+n;
     if (*s==' ')
     {
@@ -70,14 +75,14 @@ char *process_cmd(Buf *buffer,char *st,int &option)
  char *s1;
 
   option=0; 
-  s1=NULL;
+  s1=0;
 
    if (strlen(st)==0)
-    return(NULL);
+    return(0);
    if (strncmp(st,":o",2)==0)
    {
      s1=get_st(st,2);
-     if (s1==NULL)
+     if (s1==0)
       option=ERROR;
      else
       option=OPEN;
@@ -87,16 +92,16 @@ char *process_cmd(Buf *buffer,char *st,int &option)
    if (strncmp(st,":!",2)==0)
    {
      s1=get_st(st,2);
-     if (s1==NULL)
+     if (s1==0)
       option=ERROR;
      else
       option=EXEC_CMD;
      return(s1);
    }
-  if (buffer==NULL)
+  if (buffer==0)
   { 
    option=BUFFER_EMPTY;
-   return(NULL);
+   return(0);
   }
     
   if (strncmp(st,":wq",3) != 0)
@@ -110,7 +115,7 @@ char *process_cmd(Buf *buffer,char *st,int &option)
   else
   {
      s1=get_st(st,3);
-     if (s1!=NULL)
+     if (s1!=0)
       option=ERROR;
      else
       option=SAVE_AND_EXIT;
@@ -187,7 +192,7 @@ void prn_txt(Buf *buffer,int option)
 	   c=get_node_no(buffer->currrow->x);
           wprintw(msgwin," COL : %-4d LINE : %-4d",a,b);
 	  wprintw(msgwin," chars :%-2d",buffer->currrow->no_of_chars); 
-	 if (buffer->filename!=NULL)
+	 if (buffer->filename!=0)
           wprintw(msgwin,"  File Name :%s",buffer->filename);
 	 else
           wprintw(msgwin,"  File Name : -");
@@ -203,7 +208,7 @@ int buf_to_screen(Buf *b,int start_line_no)
  Row *r;
  char *st;
 
-  if (b==NULL)
+  if (b==0)
    return(ERROR);
   if (start_line_no>b->no_of_lines)
    return(ERROR);
@@ -236,17 +241,17 @@ int buf_to_screen(Buf *b,int start_line_no)
   b->currrow=r;
   b->y=1;
   b->screen_start_line=start_line_no;
-  while (b->y < line_no && b->currrow->rightptr!=NULL)
+  while (b->y < line_no && b->currrow->rightptr!=0)
   {
    b->y++;
    b->currrow=b->currrow->rightptr;
   }
-  while (n<=end_line_no && r!=NULL)
+  while (n<=end_line_no && r!=0)
   {
    y=n-start_line_no+1;
    wmove(textwin,y-1,0);
    st=get_buf_line(r); 
-   if (st!=NULL)
+   if (st!=0)
    {
     waddstr(textwin,st);
     delete[] st; //  deallocating the space after using it

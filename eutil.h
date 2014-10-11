@@ -10,6 +10,8 @@
 #ifndef EUTIL_H
 #define EUTIL_H
 
+#include <curses.h>
+
 #define COMMAND 0
 #define TEXT 1
 #define INS  2
@@ -53,8 +55,7 @@ void prn_txt(Buf *buffer,int option); // print the details
 int buf_to_screen(Buf *b,int start_line_no); // to print from the buffer to
 						//the screen
 
-WINDOW *textwin,*msgwin;
-			// msgwin is for the message window
-			// textwin is for the window for text editing
+extern WINDOW *textwin;
+extern WINDOW *msgwin;
 
 #endif // EUTIL_H

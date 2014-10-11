@@ -1,3 +1,6 @@
+#ifndef EDITOR9_H
+#define EDITOR9_H
+
 /**
  *
  * tivi: A tiny VI clone.
@@ -11,6 +14,8 @@
 #define ERROR -1
 #define ERROR_FULL -2
 #define TAB_VAL 8               // this gives the positions moved when TAB is pressed
+#define TAB_MYKEY 9
+#define SCREEN_MAXLIN 46
 
 struct lnode                    // this is the smallest node ie. node of row linked list
 {
@@ -70,4 +75,7 @@ int write_to_file(Buf * b);     // it writes everything from the buffer to
         //  the file
 Buf *read_from_file(const char *fname);
         // it generates the buffer from the file
+int delete_buffer(Buf* &b);
+
 // prototypes end ************************** 
+#endif // EDITOR9_H

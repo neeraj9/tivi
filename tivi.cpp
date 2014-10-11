@@ -11,16 +11,12 @@
 #include<curses.h>
 #include<string.h>
 
-namespace {
-  
-  const int SCREEN_MAXLIN = 46;
-  const int TAB_MYKEY = 9;
-}
-
 #include "editor9.h"
 #include "eutil.h"
 
-char *ter_st[1] = { ":q" };
+using namespace std;
+
+const char *ter_st[1] = { ":q" };
 
 int text_mode(int c);
 int common_fn(int c, int mode);
@@ -40,7 +36,7 @@ main(int argc, char *argv[]) {
   char *str1;
   int op1;                      // it stores the users option   e.g. : SAVE/SAVE AND EXIT ...
 
-  buffer = NULL;                // initially buffer is empty
+  buffer = 0;                // initially buffer is empty
   if (argc > 2)                 // if more than one arguments passed to the editor
   {
     cout << " Syntax Error ! " << endl << " only one filename accepted" << endl;
@@ -60,7 +56,7 @@ main(int argc, char *argv[]) {
   {
     start_session();
 
-    buffer = NULL;
+    buffer = 0;
   }
 
   choice = getch();
@@ -112,13 +108,13 @@ main(int argc, char *argv[]) {
           cout.flush();
           i = getch();
           start_session();      // start session
-          if (buffer != NULL)
+          if (buffer != 0)
             buf_to_screen(buffer, buffer->screen_start_line);
         } else
           // *******  SAVE  ***********
         if (op1 == SAVE) {
-          if (buffer->filename == NULL) {
-            if (str1 == NULL) {
+          if (buffer->filename == 0) {
+            if (str1 == 0) {
               print_error(" No name assigned to the present file ! ");
               wrong_cmd_flag = 1;
             } else if (file_exists(str1)) {
@@ -136,7 +132,7 @@ main(int argc, char *argv[]) {
               wrong_cmd_flag = 1;
             } else {
               delete buffer->filename;
-              buffer->filename = NULL;
+              buffer->filename = 0;
               set_filename(buffer, str1);
               write_to_file(buffer);
             }
@@ -144,10 +140,10 @@ main(int argc, char *argv[]) {
         } else
           //  ********** save and exit ***********
         if (op1 == SAVE_AND_EXIT) {
-          if (buffer->filename == NULL) {
+          if (buffer->filename == 0) {
             print_error(" No name assigned to the present file ! ");
             wrong_cmd_flag = 1;
-          } else if (str1 != NULL) {
+          } else if (str1 != 0) {
             print_error(" Not a valid command ! ");
             wrong_cmd_flag = 1;
           } else {
@@ -159,23 +155,23 @@ main(int argc, char *argv[]) {
           // *************** close ************
         if (op1 == CLOSE) {
 
-          if (buffer != NULL)
+          if (buffer != 0)
             delete_buffer(buffer);
           wclear(textwin);
           wmove(textwin, 0, 0);
           wrefresh(textwin);
           move(0, 0);
           refresh();
-          buffer = NULL;
+          buffer = 0;
         } else
           // *************** open ***************
         if (op1 == OPEN) {
-          if (buffer != NULL) {
+          if (buffer != 0) {
             print_error(" Close present file and then try opening ! ");
             wrong_cmd_flag = 1;
           } else {
             buffer = read_from_file(str1);
-            if (buffer != NULL) {
+            if (buffer != 0) {
               refresh();
               buf_to_screen(buffer, 1);
             } else {
@@ -188,7 +184,7 @@ main(int argc, char *argv[]) {
       }                         // end of if !exit_flag
       break;
     case 'd':                  // command to delete a line 
-      if (buffer == NULL) {
+      if (buffer == 0) {
         print_error(" Buffer is empty !! ");
         wrong_cmd_flag = 1;
       } else {
@@ -211,14 +207,14 @@ main(int argc, char *argv[]) {
 
     if (!exit_flag) {
       if (!wrong_cmd_flag) {
-        if (buffer == NULL) {
+        if (buffer == 0) {
           wmove(msgwin, 0, 0);
           wdeleteln(msgwin);
           wrefresh(msgwin);
         } else
           prn_txt(buffer, COMMAND);
       }
-      if (buffer != NULL)
+      if (buffer != 0)
         move(buffer->y - 1, screen_pos(buffer->currrow) - 1);
       refresh();
       choice = getch();
@@ -245,7 +241,7 @@ text_mode(int c) {
   Row *r;
   int mode;
 
-  if (buffer == NULL)
+  if (buffer == 0)
     buffer = get_buffer();
   r = buffer->currrow;
   switch (c) {
@@ -393,7 +389,7 @@ common_fn(int c, int mode) {
   Row *r;
   int re_exec_flag = 0;         // flag is set if want to run the while loop again 
 
-  if (buffer == NULL)
+  if (buffer == 0)
     return (BUFFER_EMPTY);
 
   while (1) {
@@ -693,7 +689,7 @@ cut_lin(void) {
     if (x1 == 1) {
       r->x = 1;
       r->no_of_chars = 0;
-      r->currlnode = NULL;
+      r->currlnode = 0;
       buffer->currrow->currlnode = l;
       buffer->currrow->x = 1;
       buffer->currrow->no_of_chars = nc;
@@ -701,9 +697,9 @@ cut_lin(void) {
       if (x1 % 16 == 1) {
         r->currlnode = r->currlnode->leftptr; // it is illigal only when r->x==1
         r->x--;
-        r->currlnode->rightptr = NULL;
+        r->currlnode->rightptr = 0;
         r->no_of_chars = x1 - 1;
-        l->leftptr = NULL;
+        l->leftptr = 0;
         buffer->currrow->currlnode = l;
         buffer->currrow->x = 1;
         buffer->currrow->no_of_chars = nc - x1 + 1;
@@ -711,7 +707,7 @@ cut_lin(void) {
         i = x1 % 16;
         if (i == 0)
           i = 16;
-        if (l->rightptr == NULL) {
+        if (l->rightptr == 0) {
           l = get_lnode();
           buffer->currrow->currlnode = l;
           nc1 = nc % 16;
@@ -724,7 +720,7 @@ cut_lin(void) {
           buffer->currrow->no_of_chars = nc - x1 + 1;
         } else {
           l = l->rightptr;
-          l->leftptr = NULL;
+          l->leftptr = 0;
           buffer->currrow->currlnode = l;
           nc1 = nc % 16;
           buffer->currrow->x = 1;
@@ -740,7 +736,7 @@ cut_lin(void) {
         }
         r->x--;
         r->no_of_chars = x1 - 1;
-        r->currlnode->rightptr = NULL;
+        r->currlnode->rightptr = 0;
       }
     }
   }
@@ -752,6 +748,7 @@ cut_lin(void) {
   delete[]st;
   wmove(textwin, buffer->y - 1, screen_pos(r) - 1);
   wrefresh(textwin);
+  return 0;
 }
 
 // **********************************************************
@@ -771,7 +768,7 @@ del_lin(void) {
   {                             // on the screen
     delete_line(buffer);
     r = buffer->currrow;
-    while (y1++ < SCREEN_MAXLIN && r->rightptr != NULL)
+    while (y1++ < SCREEN_MAXLIN && r->rightptr != 0)
       r = r->rightptr;
     st = get_buf_line(r);
     wmove(textwin, SCREEN_MAXLIN - 1, 0);
